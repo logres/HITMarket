@@ -31,7 +31,9 @@ const StyledButton = (props) => {
             {
                 props.chosen ? props.activeIcon : props.Icon
             }
-            <div>
+            <div style={{
+                transform: `scale(${window.screen.width / 412},${window.screen.height / 915})`
+            }} >
                 {props.text}
             </div>
         </ButtonWithCss>
