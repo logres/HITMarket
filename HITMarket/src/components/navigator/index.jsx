@@ -11,6 +11,10 @@ import Alert from '../../assets/navigator/alert.svg?react';
 import Market from '../../assets/navigator/market.svg?react';
 import Mine from '../../assets/navigator/mine.svg?react';
 import PriceTag from '../../assets/navigator/priceTag.svg?react';
+import AlertActive from '../../assets/navigator/alertActive.svg?react';
+import MarketActive from '../../assets/navigator/marketActive.svg?react';
+import MineActive from '../../assets/navigator/mineActive.svg?react';
+import PriceTagActive from '../../assets/navigator/priceTagActive.svg?react';
 
 
 const StyledButton = (props) => {
@@ -21,17 +25,19 @@ const StyledButton = (props) => {
     }`;
 
     return (
-        <ButtonWithCss disableTouchRipple  sx={{
-            display: 'flex', flexDirection:'column', justifyContent:'center', alignItems:'center',
+        <ButtonWithCss disableTouchRipple sx={{
+            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
         }}   {...props} >
-            {props.children}
+            {
+                props.chosen ? props.activeIcon : props.Icon
+            }
             <div>
                 {props.text}
             </div>
         </ButtonWithCss>
     )
 
-} 
+}
 
 
 export const Navigator = (props) => {
@@ -54,30 +60,31 @@ export const Navigator = (props) => {
         >
             <StyledButton text={'市场'} onClick={
                 () => navigator('/market')
-            } chosen={pageState==='market'} >
-                <Market />
-            </StyledButton>
+            } chosen={pageState === 'market'}
+                activeIcon={<MarketActive />}
+                Icon={<Market />}
+            />
             <StyledButton text={'求购'} onClick={
                 () => navigator('/sell')
-            } chosen={pageState==='sell'}
-            >
-                <PriceTag />
-            </StyledButton>
-            <StyledButton >
-                <AddIcon />
-            </StyledButton>
+            } chosen={pageState === 'sell'}
+                activeIcon={<PriceTagActive />}
+                Icon={<PriceTag />}
+            />
+            <StyledButton
+                Icon={<AddIcon />}
+            />
             <StyledButton text={'消息'} onClick={
-                () => navigator('/alert')
-            } chosen={pageState==='alert'}
-            >
-                <Alert />
-            </StyledButton>
+                () => navigator('/message')
+            } chosen={pageState === 'message'}
+                activeIcon={<AlertActive />}
+                Icon={<Alert />}
+            />
             <StyledButton text={'我的'} onClick={
                 () => navigator('/mine')
-            } chosen={pageState==='mine'}
-            >
-                <Mine />
-            </StyledButton>
+            } chosen={pageState === 'mine'}
+                activeIcon={<MineActive />}
+                Icon={<Mine />}
+            />
         </div>
     );
 

@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { TestPage } from '@/pages/testPage';
-import  MarketPage  from '@/pages/MarketPage';
-import  SellPage  from '@/pages/SellPage';
-import  MinePage  from '@/pages/MinePage';
-import MessagePage from '@/pages/MessagePage';
+import  MarketPage  from '@/pages/marketPage';
+import  SellPage  from '@/pages/sellPage';
+import  MinePage  from '@/pages/minePage';
+import MessagePage from '@/pages/messagePage';
 
 
 

@@ -20,3 +20,5 @@ export const MainFrame = (props) => {
         </div>
     );
 }
+
+export default MainFrame;
