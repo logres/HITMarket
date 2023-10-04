@@ -10,7 +10,8 @@ export const MainFrame = (props) => {
         <div style={{
             height: '100vh',
             width: '100vw',
-            overflow: 'scroll'
+            overflow: 'scroll',
+            backgroundColor: '#F5F5F5',
         }}>
             {props.children}
             <div style={{

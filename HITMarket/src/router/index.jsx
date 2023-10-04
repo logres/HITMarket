@@ -13,7 +13,7 @@ const AppRouter = () => {
         <Router>
             <Routes>
                 <Route
-                    element={<TestPage />}
+                    element={<MarketPage />}
                     path="/"
                 />
                 <Route
