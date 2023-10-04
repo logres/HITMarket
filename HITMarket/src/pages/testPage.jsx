@@ -1,19 +1,11 @@
 import { Navigator } from '@/components/navigator';
-
+import BaseCard from '@/components/baseCard';
 
 export const TestPage = () => {
     return (
-        <div style={{
-            height: '100vh',
-            width: '100vw',
-        }}>
-            <div style={{
-                position: 'fixed',
-                bottom: 0,
-            }}>
-                <Navigator />
-            </div>
+        <div>
+            你好
+        <BaseCard />
         </div>
-
     );
 } 

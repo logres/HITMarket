@@ -24,6 +24,8 @@ const StyledButton = (props) => {
       outline: none;
     }`;
 
+    const scale = Math.min(window.screen.width / 412,window.screen.height / 915)
+
     return (
         <ButtonWithCss disableTouchRipple sx={{
             display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
@@ -32,7 +34,7 @@ const StyledButton = (props) => {
                 props.chosen ? props.activeIcon : props.Icon
             }
             <div style={{
-                transform: `scale(${window.screen.width / 412},${window.screen.height / 915})`
+                transform: `scale(${scale},${scale})`
             }} >
                 {props.text}
             </div>
