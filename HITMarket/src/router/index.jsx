@@ -1,9 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { TestPage } from '@/pages/testPage';
-import  MarketPage  from '@/pages/marketPage';
-import  SellPage  from '@/pages/sellPage';
-import  MinePage  from '@/pages/minePage';
+import MarketPage from '@/pages/marketPage';
+import SellPage from '@/pages/sellPage';
+import MinePage from '@/pages/minePage';
 import MessagePage from '@/pages/messagePage';
+import NewPostPage from '@/pages/newPostPage';
 
 
 
@@ -36,6 +37,9 @@ const AppRouter = () => {
                     element={<MinePage />}
                     path="/mine"
                 />
+                <Route
+                    element={<NewPostPage />}
+                    path="/newPost" />
             </Routes>
         </Router>
     );

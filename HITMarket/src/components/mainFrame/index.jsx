@@ -4,8 +4,8 @@ import { Navigator } from '../navigator';
 export const MainFrame = (props) => {
 
     const pageState = props.pageState;
-    const needNavigator =  props.needNavigator?props.needNavigator:true;
-
+    const needNavigator =  props.needNavigator===false?props.needNavigator:true;
+    
     return (
         <div style={{
             height: '100vh',

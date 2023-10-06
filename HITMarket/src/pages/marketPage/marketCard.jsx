@@ -7,6 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import {Divider} from '@mui/material';
 import { red } from '@mui/material/colors';
 
 const PostCard = (
@@ -28,7 +29,7 @@ const PostCard = (
     }
 
     return (
-        <Card sx={{ width: '90vw', margin: '5px', backgroundColor: '#FFFFFF', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.2)', border: '2px solid #FFF' }}>
+        <Card className="w-[90vw]"  sx={{ margin: '5px', backgroundColor: '#FFFFFF', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.2)', border: '2px solid #FFF', borderRadius: '10px' }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -38,6 +39,7 @@ const PostCard = (
                 title={title}
                 subheader={time}
             />
+            <Divider />
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
                     {abstractDetail}

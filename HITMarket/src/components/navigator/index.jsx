@@ -6,18 +6,24 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import styled from '@emotion/styled'
 
-import AddIcon from '../../assets/navigator/addIcon.svg?react';
-import Alert from '../../assets/navigator/alert.svg?react';
-import Market from '../../assets/navigator/market.svg?react';
-import Mine from '../../assets/navigator/mine.svg?react';
-import PriceTag from '../../assets/navigator/priceTag.svg?react';
-import AlertActive from '../../assets/navigator/alertActive.svg?react';
-import MarketActive from '../../assets/navigator/marketActive.svg?react';
-import MineActive from '../../assets/navigator/mineActive.svg?react';
-import PriceTagActive from '../../assets/navigator/priceTagActive.svg?react';
+import AddIcon from '@/assets/navigator/addIcon.svg?react';
+import Alert from '@/assets/navigator/alert.svg?react';
+import Market from '@/assets/navigator/market.svg?react';
+import Mine from '@/assets/navigator/mine.svg?react';
+import PriceTag from '@/assets/navigator/priceTag.svg?react';
+import AlertActive from '@/assets/navigator/alertActive.svg?react';
+import MarketActive from '@/assets/navigator/marketActive.svg?react';
+import MineActive from '@/assets/navigator/mineActive.svg?react';
+import PriceTagActive from '@/assets/navigator/priceTagActive.svg?react';
 
 
-const StyledButton = (props) => {
+const StyledButton = ({
+    chosen,
+    activeIcon,
+    Icon,
+    text,
+    ...rest
+}) => {
 
     const ButtonWithCss = styled(Button)`
     &:focus {
@@ -29,14 +35,14 @@ const StyledButton = (props) => {
     return (
         <ButtonWithCss disableTouchRipple sx={{
             display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
-        }}   {...props} >
+        }}   {...rest} >
             {
-                props.chosen ? props.activeIcon : props.Icon
+                chosen ? activeIcon : Icon
             }
             <div style={{
                 transform: `scale(${scale},${scale})`
             }} >
-                {props.text}
+                {text}
             </div>
         </ButtonWithCss>
     )
@@ -76,6 +82,7 @@ export const Navigator = (props) => {
             />
             <StyledButton
                 Icon={<AddIcon />}
+                onClick={() => navigator('/newPost')}
             />
             <StyledButton text={'消息'} onClick={
                 () => navigator('/message')

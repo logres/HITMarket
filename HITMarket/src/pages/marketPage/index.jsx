@@ -1,12 +1,22 @@
 import MainFrame from '@/components/mainFrame';
 import PostCard from './marketCard'
 import SearchBar from '@/components/baseSearchBar';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useState } from 'react';
+
+
+const incrementContent = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 
 const MarketPage = () => {
 
-    const content = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-        11, 12, 3, 42, 42, 43124, 213, 213, 123, 123, 21, 321, 321, 321, 3, 123, 21, 321, 3, 213, 21, 321, 3, 123, 21, 3213, 12, 1, 1, 1, 1, 1, 1
-    ];
+    const [content, setContent] = useState(incrementContent);
+
+    const fetchMoreData = () => {
+        setTimeout(() => {
+            setContent([...content, ...incrementContent]);
+        }, 500)
+    }
+
 
     return (
         <MainFrame pageState={'market'} >
@@ -16,21 +26,41 @@ const MarketPage = () => {
             <div
                 style={{
                     width: '100vw',
-                    height: 'auto',
+                    height: 'calc(100vh - 103px)',
+                    overflowY: 'scroll',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}
+                id='scroll-container'
             >
-                <PostCard />
-                <PostCard />
-                <PostCard />
-                <PostCard />
-                <PostCard />
-                <PostCard />
+                {/* <h1>demo: react-infinite-scroll-component</h1> */}
+                <InfiniteScroll
+                    dataLength={content.length}
+                    next={
+                        fetchMoreData
+                    }
+                    hasMore={content.length<100}
+                    loader={<p
+                        style={{
+                            color: '#2b2b2b'
+                        }}
+                    >加载中……</p>}
+                    scrollableTarget='scroll-container'
+                    endMessage={<p>已经划到底啦！</p>}
+                    height='calc(100vh - 103px)'
+                >
+
+                    <ul>
+                        {
+                            content.map((item, index) => <PostCard key={index} />)
+                        }
+                    </ul>
+                </InfiniteScroll>
             </div>
-            <div style={{ height: '50px' }} />
+
+            {/* <div style={{ height: '50px' }} /> */}
             {/* {content.map(item => (<div>{item}</div>))} */}
         </MainFrame>
     );
