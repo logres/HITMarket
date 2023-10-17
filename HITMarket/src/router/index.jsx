@@ -5,7 +5,7 @@ import SellPage from '@/pages/sellPage';
 import MinePage from '@/pages/minePage';
 import MessagePage from '@/pages/messagePage';
 import NewPostPage from '@/pages/newPostPage';
-
+import MarketDetailPage from '@/pages/marketPage/marketDetailPage';
 
 
 const AppRouter = () => {
@@ -40,6 +40,9 @@ const AppRouter = () => {
                 <Route
                     element={<NewPostPage />}
                     path="/newPost" />
+                <Route
+                    element={<MarketDetailPage />}
+                    path="/marketDetail/:postId" />
             </Routes>
         </Router>
     );

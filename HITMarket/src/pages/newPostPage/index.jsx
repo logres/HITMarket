@@ -1,37 +1,59 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import CustomTextField from '@/components/TextField';
 
-
-import { Typography, Button, Card, Chip, CardContent, TextField } from '@mui/material';
+import { Typography, Button, Card, Chip, CardContent, TextField, Switch } from '@mui/material';
 import * as Icons from '@mui/icons-material';
-
-import styled from '@emotion/styled';
 
 import MainFrame from '@/components/mainFrame';
 import ItemCard from './itemCard';
 import ImageBlock, { AddBlock } from '@/components/imageBlock';
 
-// import ImageUploader from 'react-image-upload'
-
+import { publishPost } from '@/Utils/api';
 
 const NewPostPage = () => {
 
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [location, setLocation] = useState('');
 
-    // const [value, setValue] = useState('');
-    const [content, setContent] = useState([]);
     const [pictures, setPictures] = useState([]);
     const [pictureIndex, setPictureIndex] = useState(0);
 
     const [items, setItems] = useState([]);
     const [itemIndex, setItemIndex] = useState(0);
 
-    const navigator = useNavigate();
+    const [kind, setKind] = useState('buy');
 
-    // console.log(delta);
+    const navigator = useNavigate();
+    const [isPublishing, setIsPublishing] = useState(false);
+    const [published, setPublished] = useState(false);
+
+
+    useEffect(() => {
+        if (!isPublishing && published) {
+            navigator('/market');
+        }
+    }, [isPublishing, published]);
 
     const makePost = () => {
-        navigator('/market');
-        // Upload New Delta
+        const publish = async () => {
+            setIsPublishing(true);
+            const res = await publishPost({
+                title: title,
+                text: content,
+                kind: kind,
+                items: items,
+                pictures: pictures,
+                location: location
+            })
+            if (res.err === 0) {
+                setPublished(true);
+            }
+            setIsPublishing(false);
+        }
+        publish();
+        // navigator('/market');
     }
 
     const handlePictureAdd = (picture) => {
@@ -45,7 +67,7 @@ const NewPostPage = () => {
     }
 
     const handleAddItem = () => {
-        setItems([...items, { editID: itemIndex, name: 'test', price: '100', description: 'test' }]);
+        setItems([...items, { editID: itemIndex, name: 'test', price: '100', description: 'test', category: 'other' }]);
         setItemIndex(itemIndex + 1);
     }
 
@@ -67,7 +89,8 @@ const NewPostPage = () => {
 
     return (
         <MainFrame needNavigator={false} >
-            <div className="sticky top-0 w-full flex justify-between items-center z-10 pt-2.5 pb-2.5 bg-white">
+            {published && <p>发布中...</p>}
+            <div className="sticky top-0 w-full flex justify-between items-center z-10 pt-2.5 pb-2.5 pl-5 pr-5 bg-white">
                 <Button className="focus:outline-none" onClick={() => {
                     window.history.back();
                 }}
@@ -88,42 +111,73 @@ const NewPostPage = () => {
                 alignItems: 'center',
             }} >
                 <Card style={{ color: 'black', width: '90vw', padding: '10px', marginTop: '10px' }} >
-                    <CardContent sx={{ display: 'flex', flexDirection: 'column' }}  >
-
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}  >
-                            {/* 标题 */}
-                            <TextField sx={{ width: '80%', marginBottom: '10px' }} />
-                            {/* 内容 */}
-                            <TextField multiline sx={{ width: '80%' }} />
+                    <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}  >
+                        <div className='flex justify-end items-center'>{kind === 'buy' ? '我想出' : '我想买'}<Switch checked={kind === 'sell'}
+                            onChange={() => {
+                                if (kind === 'sell') setKind('buy');
+                                else setKind('sell')
+                            }} /> </div>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} >
+                            <div className='flex flex-col items-start' >
+                                <Typography sx={{ fontSize: '18px' }}>
+                                    标题
+                                </Typography>
+                                <CustomTextField sx={{ marginBottom: '10px' }} value={title} onChange={(e) => setTitle(e.target.value)} placeholder='标题' />
+                            </div>
+                            <div className='flex flex-col items-start' >
+                                <Typography sx={{ fontSize: '18px' }}>
+                                    交易地点
+                                </Typography>
+                                <CustomTextField sx={{ marginBottom: '10px' }} value={location} onChange={(e) => setLocation(e.target.value)} placeholder='理想交易地点' />
+                            </div>
+                            <div className='flex flex-col items-start' >
+                                <Typography sx={{ fontSize: '18px' }}>
+                                    内容
+                                </Typography>
+                                <TextField multiline value={content} onChange={(e) => setContent(e.target.value)} placeholder='内容' minRows={4}
+                                    inputProps={{
+                                        style: {
+                                            width: '80vw',
+                                            fontSize: '16px',
+                                        },
+                                    }}
+                                />
+                            </div>
                         </div>
 
 
                         {/* 图片 */}
-                        <div className='flex justify-center'>
-                            <div className='flex flex-wrap justify-start' style={{ width: '80%' }} >
+                        <div className='flex justify-start w-full'>
+                            <div className='flex flex-wrap justify-start' style={{ width: '80%', gap: '10px 10px' }} >
                                 {
                                     pictures.map((picture, index) => {
-                                        return <div className='mr-1.25 ml-1.25' ><ImageBlock imageUrl={picture.picture} onDelete={() => handlePictureRemove(picture.pictureID)} /></div>
+                                        return <ImageBlock imageUrl={picture.picture} onDelete={() => handlePictureRemove(picture.pictureID)} />
                                     })
                                 }
-                                <div className='mr-1.25 ml-1.25' >
-                                    <AddBlock onAdd={handlePictureAdd} />
-                                </div>
+                                <AddBlock onAdd={handlePictureAdd} />
                             </div>
                         </div>
 
                     </CardContent>
                 </Card>
+
                 {
-                    items.map((item, index) => <ItemCard item={item}
-                        setItemValue={handleItemEdit(item.editID)}
-                        removeSelf={handleItemDelete(item.editID)}
-                    />)
+                    items.map((item, index) =>
+                        <div style={{ width: '90vw', marginTop: '20px' }} >
+                            <ItemCard item={item}
+                                setItemValue={handleItemEdit(item.editID)}
+                                removeSelf={handleItemDelete(item.editID)}
+                            />
+                        </div>)
                 }
             </div>
-            <Button className='focus:outline-none' onClick={handleAddItem} >
-                <Icons.Add sx={{ transform: 'scale(2,2)' }} />
+            <Button className='focus:outline-none' onClick={handleAddItem}  >
+                <Icons.Add sx={{ transform: 'scale(2,2)', marginTop: '20px' }} />
             </Button>
+            {/* Loading absolute */}
+            {/* <div style={{ position: 'absolute', top: '50vh', left: '50vw', display: isPublishing ? 'block' : 'none' }} >
+                <Icons.Circle />
+            </div> */}
         </MainFrame>
     )
 };

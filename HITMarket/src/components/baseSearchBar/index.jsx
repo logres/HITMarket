@@ -1,39 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, TextField, Button } from '@mui/material';
 
 const SearchBox = ({
+    value = '',
     onChange = (value) => { },
 }) => {
     return (
-        <Autocomplete
-            freeSolo
-            options={[]}
-            onChange={(e, value) => {
-                console.log(value);
-                onChange(value);
+        <div className='flex justify-between' style={{ width: '90vw' }} >
+            <Autocomplete
+                freeSolo
+                options={[]}
+                onChange={(e, value) => {
+                    console.log(value);
+                    onChange(value);
+                }}
+                sx={{
+                    width: '80vw',
+                    backgroundColor: '#FFFFFF',
+                    '& .MuiOutlinedInput-root': {
+                        height: '33px'
+                    },
+                    '& .MuiAutocomplete-input': {
+                        height: '20px'
+                    }
+                }}
+                disableClearable
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        InputProps={{
+                            ...params.InputProps,
+                            type: 'search',
+                        }}
+                        size='small'
+                    />
+                )}
+            />
+            <Button onClick={() => {
+                onChange('');
             }}
-            sx={{
-                width: '90vw',
-                backgroundColor: '#FFFFFF',
-                '& .MuiOutlinedInput-root':{
-                    height:'33px'
-                },
-                '& .MuiAutocomplete-input':{
-                    height:'20px'
-                }
-            }}
-            disableClearable
-            renderInput={(params) => (
-                <TextField
-                    {...params}
-                    InputProps={{
-                        ...params.InputProps,
-                        type: 'search',
-                    }}
-                    size='small'
-                />
-            )}
-        />
+                // disableRipple
+                className='focus:outline-none'
+            >
+                Cancel
+            </Button>
+        </div>
     );
 };
 

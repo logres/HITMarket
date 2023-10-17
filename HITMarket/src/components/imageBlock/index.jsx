@@ -34,7 +34,6 @@ export const AddBlock = ({ onAdd, width = '20vw', height = '20vw' }) => {
           console.log(dataURL);
           onAdd(dataURL);
         };
-        // console.log("!@");
         reader.readAsDataURL(file);
         event.target.value = '';
     };
@@ -44,15 +43,15 @@ export const AddBlock = ({ onAdd, width = '20vw', height = '20vw' }) => {
     };
 
     return (
-        <Box style={{ border: '1px solid black', width: width, height: height }}>
+        <Box style={{ border: '1px solid gray', width: width, height: height }}>
             <input
                 type="file"
                 ref={fileInputRef}
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
             />
-            <IconButton onClick={handleClick} style={{ width: width, height: height }} className="focus:outline-none">
-                <Icons.Add />
+            <IconButton onClick={handleClick} style={{ width: width, height: height }} className="focus:outline-none" disableRipple>
+                <Icons.Add style={{transform: 'scale(3,3)'}} />
             </IconButton>
         </Box>
     );
