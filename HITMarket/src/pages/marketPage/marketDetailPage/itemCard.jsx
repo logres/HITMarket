@@ -37,7 +37,7 @@ const ItemCard = ({
     changeStatus,
 }) => {
 
-    console.log(item);
+    // console.log(item);
 
     return (
         <Card sx={{ width: '90vw', borderRadius: '10px', boxShadow: 'none' }}>

@@ -5,6 +5,8 @@ import { Chip, Divider, Typography, Card, CardContent, Avatar, CardHeader } from
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import { changeTimeShow } from '@/Utils/timeTool'
 import styled from '@emotion/styled';
+import { MinioHost as Host } from '@/Utils/axios_instance'
+
 
 
 const ImageGalleryContainer = styled.div`
@@ -21,7 +23,7 @@ const Image = styled.img`
   margin-bottom: 10px;
 `;
 
-const Host = 'http://39.107.83.124:9000/'
+// const Host = 'http://39.107.83.124:9000/'
 
 const loadPicture = async (pic) => {
     try {

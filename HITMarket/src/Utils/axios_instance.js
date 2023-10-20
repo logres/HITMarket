@@ -1,22 +1,24 @@
 import axios from 'axios';
 
+const Host = 'http://39.107.83.124:14535';
+
 export const login = async (code) => {
     // console.log(code);
-    return await axios.get('http://39.107.83.124:14535/api/login', {
+    return await axios.get(Host + '/api/login', {
         params: {
             code: code
         }
     });
 }
 
-// let FLAG = false;
+export const MinioHost = 'http://39.107.83.124:9000/'
 
 
 
 
 // 创建一个 Axios 实例
 const instance = axios.create({
-    baseURL: 'http://39.107.83.124:14535', // 设置基本的 API URL
+    baseURL: Host, // 设置基本的 API URL
     timeout: 20000, // 设置请求超时时间，单位为毫秒
     headers: {
         // 'Authorization': ,

@@ -8,11 +8,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { getPostList } from '@/Utils/api';
 
-import { changeTimeShow } from '@/Utils/timeTool'
-// import { FLAG } from '@/Utils/axios_instance';
-
-const incrementContent = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-
 const MarketPage = ({
     kind
 }) => {

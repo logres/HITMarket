@@ -12,8 +12,10 @@ import { Divider } from '@mui/material';
 import { red } from '@mui/material/colors';
 import ImageBlock from '@/components/imageBlock';
 import { changeTimeShow } from '@/Utils/timeTool'
+import { MinioHost as Host } from '@/Utils/axios_instance'
 
-const Host = 'http://39.107.83.124:9000/'
+
+// const Host = 'http://39.107.83.124:9000/'
 
 const PostCard = (
     {

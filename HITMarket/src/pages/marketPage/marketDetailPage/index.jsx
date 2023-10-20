@@ -17,6 +17,7 @@ import { editFavorite } from '@/Utils/api'
 
 import { editPost } from '@/Utils/api'
 // import * as Icons from '@mui/icons-material';
+import { MinioHost as Host } from '@/Utils/axios_instance'
 
 
 const ImageGalleryContainer = styled.div`
@@ -33,7 +34,7 @@ const Image = styled.img`
   margin-bottom: 10px;
 `;
 
-const Host = 'http://39.107.83.124:9000/'
+// const Host = 'http://39.107.83.124:9000/'
 
 const MarketDetailPage = ({
     kind
