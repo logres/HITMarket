@@ -1,6 +1,5 @@
 import axios_instance from './axios_instance';
 
-// get posts
 
 export const getPostList = async ({
     kind,//num
@@ -18,36 +17,11 @@ export const getPostList = async ({
     });
 }
 
-export const getPost = async (id) => {
-    return await axios_instance.get(`/posts/${id}`);
+export const getPost = async (pid) => {
+    return await axios_instance.get(`/api/post`, {
+        params: { pid: pid },
+    });
 }
-// {
-//     "title": "设标酸养现色建",
-//     "text": "id consequat",
-//     "kind": 1,
-//     "items": [
-//         {
-//             "name": "社社交",
-//             "text": "dolore deserunt commodo voluptate",
-//             "price": 1375,
-//             "category": "手机"
-//         },
-//         {
-//             "name": "眼与两个存",
-//             "text": "in nulla id Excepteur",
-//             "price": 4462,
-//             "category": "笔记本"
-//         }
-//     ]
-// }
-
-//     "items": [
-//         {
-//             "name": "社社交",
-//             "text": "dolore deserunt commodo voluptate",
-//             "price": 1375,
-//             "category": "手机"
-//         },
 
 export const publishPost = async ({
     title,//string
@@ -67,10 +41,97 @@ export const publishPost = async ({
     });
 }
 
-export const replyPost = async () => {
+// {
+//   iid:string,
+//   status:1/2, 
+// }
+// 
+// 
+export const editPost = async ({
+    pid,
+    items,
+    status,
+}) => {
+    return await axios_instance.post('/api/editpost', {
+        pid: pid,
+        items: items,
+        status: status,
+    });;
+}
 
+// items:{
+//     id:string,
+//     price:num,
+// }
+export const publishReply = async ({
+    pid,
+    text,
+    pictures,
+    items,
+}) => {
+    return await axios_instance.post('/api/comment', {
+        pid: pid,
+        text: text,
+        items: items,
+        pictures: pictures,
+    })
 }
 
 export const getReplyList = async () => {
+    return await axios_instance.get('/api/replies');
+}
 
+export const editFavorite = async (pid, action) => {
+    return await axios_instance.post('/api/editfavorite', {
+        pid: pid,
+        fav: action === 'add' ? 1 : 2,
+    });
+}
+
+
+export const getFavoritePostList = async ({
+    start,//string
+    num,//num
+}) => {
+    return await axios_instance.post('/api/favorite', {
+        start: start,
+        num: num,
+    });
+}
+
+export const getMyPostList = async ({
+    start,//string
+    num,//num
+}) => {
+    return await axios_instance.post('/api/myposts', {
+        start: start,
+        num: num,
+    });
+}
+
+
+export const getPersonInfo = async (userTarget = -1) => {
+    if (userTarget === -1) {
+        return await axios_instance.get('/api/personal');
+    }
+    return await axios_instance.get('/api/personal',
+        {
+            params: { user: userTarget },
+
+        });
+}
+
+export const editPersonInfo = async ({
+    phone,
+    QQ,
+    weChat,
+    signature,
+}) => {
+    return await axios_instance.post('/api/personal', {
+        phone: phone,
+        qq: QQ,
+        wx: weChat,
+        signature: signature,
+        email: '',
+    });
 }

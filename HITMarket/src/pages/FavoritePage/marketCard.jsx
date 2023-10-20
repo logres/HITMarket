@@ -46,12 +46,12 @@ const PostCard = (
 
     return (
         <Card className="w-[90vw]" sx={{
-            margin: '5px', backgroundColor: '#FFFFFF', border: '2px solid #FFF', borderRadius: '10px', boxShadow: 'none', padding: '16px',
+            margin: '5px', backgroundColor: '#FFFFFF', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.2)', border: '2px solid #FFF', borderRadius: '10px', boxShadow: 'none', padding: '16px',
         }} onClick={onClick}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        {item.userName[0]}
+                        {item.userName}
                     </Avatar>
                 }
                 sx={{
@@ -64,8 +64,8 @@ const PostCard = (
                 subheader={changeTimeShow(item.time)}
             />
             <Divider />
-            <CardContent className="flex flex-col items-start" style={{ paddingLeft: '0px' }}  >
-                <Typography variant="h7" color="black">
+            <CardContent>
+                <Typography variant="body2" color="black">
                     {item.title}
                 </Typography>
             </CardContent>

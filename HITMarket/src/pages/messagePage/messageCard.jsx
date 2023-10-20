@@ -4,39 +4,16 @@ import { red } from '@mui/material/colors';
 import styled from '@emotion/styled'
 
 
+import { changeTimeShow } from '@/Utils/timeTool'
+import { useNavigate } from 'react-router-dom';
+
+
 const MessageCard = (
-    props
+    {
+        reply
+    }
 ) => {
 
-    const {
-        userName,
-        time,
-        reply,
-        originMessage,
-        pictureURI,
-        interestedItems,
-    } = {
-        userName: '罗家乐',
-        time: '2023-10-03',
-        reply: '内容内容内容,回复回复回复回复回复,回复回复,回复回复,回复回复回复回复回复回复回复回复回复回复回复回复回复回复回复回复回复回复回复回复回复回复回复回复回复',
-        originMessage: '出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad出ipad',
-        pictureURI: 'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/ipad-air-select-wifi-blue-202203?wid=540&hei=540&align=0%2C-1&fmt=jpeg&qlt=90&fit=constrain&.v=1645065732688',
-        interestedItems: [
-
-            {
-                item: 'AppleOne',
-                price: 100
-            },
-            {
-                item: 'AppleTwo',
-                price: 200
-            },
-            {
-                item: 'AppleThree',
-                price: 300
-            }
-        ]
-    }
 
     const MultiContentTypography = styled(Typography)`
     text-align: left;
@@ -53,34 +30,38 @@ const MessageCard = (
     text-overflow: ellipsis;
   `;
 
+    const navigator = useNavigate();
+
 
     return (
-        <Card sx={{ width: '90vw', margin: '5px', backgroundColor: '#FFFFFF', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.2)', border: '2px solid #FFF', borderRadius: '10px' }}>
+        <Card sx={{ width: '90vw', margin: '5px', backgroundColor: '#FFFFFF', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.2)', border: '2px solid #FFF', borderRadius: '10px' }}
+            onClick={() => navigator('/marketDetail/' + reply?.pid)}
+        >
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        {userName}
+                        {reply?.userName?.[0]}
                     </Avatar>
                 }
-                // title={title}
-                subheader={time}
+                sx={{ textAlign: 'left' }}
+                title={reply?.userName}
+                subheader={changeTimeShow(reply?.date)}
             />
 
             <CardContent>
                 <div >
                     <MultiContentTypography>
-                        {'回复: ' + reply}
+                        {'回复: ' + reply.text}
                     </MultiContentTypography>
                 </div>
 
                 <div style={{ backgroundColor: '#ebebeb', paddingTop: '10px', paddingBottom: '10px', paddingLeft: '10px', paddingRight: '10px', marginTop: '5px' }} >
                     <MultiContentTypography style={{ fontSize: '14px' }} >
-                        {originMessage}
+                        {reply.post}
                     </MultiContentTypography>
                 </div>
 
                 <div
-                    // class='flex justify-center items-center'
                     style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -90,35 +71,32 @@ const MessageCard = (
                         marginTop: '10px',
                     }}
                 >
-                    {
-                        interestedItems.map((item, index) =>
-                            <Chip label={
-                                <div style={{
-                                    display: 'flex',
-                                    // 后处理
-                                    width: '35vw',
-                                    justifyContent: 'space-between',
-                                }}  >
-                                    <div>
-                                        {index + 1}
+                    <div className='flex flex-start' style={{ whiteSpace: 'wrap', gap: '10px' }}>
+                        {reply?.items?.map?.((item) => {
+                            return (
+                                <Chip label={
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                    }}  >
+                                        <div>
+                                            {item.name}
+                                        </div>
+                                        <div style={{ width: '20px' }} />
+                                        <div style={{ color: 'red' }} >
+                                            {'￥' + item.price}
+                                        </div>
                                     </div>
-                                    <div>
-                                        {item.item}
-                                    </div>
-                                    <div>
-                                        {item.price}
-                                    </div>
-                                </div>
-                            }
-                                style={
-                                    {
-                                        width: '48%',
-                                        marginTop: '5px',
-                                    }
                                 }
-                            />
-                        )
-                    }
+                                    style={
+                                        {
+                                            marginTop: '5px',
+                                        }
+                                    }
+                                />
+                            )
+                        })}
+                    </div>
                 </div>
 
             </CardContent>

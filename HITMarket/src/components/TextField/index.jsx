@@ -1,15 +1,16 @@
-import { TextField } from "@mui/material"
+import { TextField, InputAdornment } from "@mui/material"
 
 const CustomTextField = ({
-    height = '10px',
-    width = '80vw',
+    height = '40px',
+    width = '85vw',
     fontSize = '16px',
+    endAornment = null,
     ...props
 }) => {
     return (
         <TextField
             {...props}
-            inputProps={{
+            InputProps={{
                 style: {
                     height: height,
                     width: width,

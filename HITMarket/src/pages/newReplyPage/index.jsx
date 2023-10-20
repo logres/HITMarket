@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CustomTextField from '@/components/TextField';
 
 import { Typography, Button, Card, Chip, CardContent, TextField, Switch } from '@mui/material';
@@ -9,22 +9,15 @@ import MainFrame from '@/components/mainFrame';
 import ItemCard from './itemCard';
 import ImageBlock, { AddBlock } from '@/components/imageBlock';
 
-import { publishPost } from '@/Utils/api';
+import { publishReply, getPost } from '@/Utils/api';
 
-const NewPostPage = () => {
+const NewReplyPage = () => {
 
-    const [title, setTitle] = useState('');
+    const { postId } = useParams();
+
     const [content, setContent] = useState('');
-    const [location, setLocation] = useState('');
-
     const [pictures, setPictures] = useState([]);
     const [pictureIndex, setPictureIndex] = useState(0);
-
-    const [items, setItems] = useState([]);
-    const [itemIndex, setItemIndex] = useState(0);
-
-    const [kind, setKind] = useState('buy');
-
     const navigator = useNavigate();
     const [isPublishing, setIsPublishing] = useState(false);
     const [published, setPublished] = useState(false);
@@ -32,20 +25,25 @@ const NewPostPage = () => {
 
     useEffect(() => {
         if (!isPublishing && published) {
-            navigator('/market');
+            window.history.back();
         }
     }, [isPublishing, published]);
 
     const makePost = () => {
         const publish = async () => {
             setIsPublishing(true);
-            const res = await publishPost({
-                title: title,
+            const res = await publishReply({
+                pid: postId,
                 text: content,
-                kind: kind,
-                items: items,
+                items: totalItems.filter((item) => {
+                    return item.checked
+                }).map((item) => {
+                    return {
+                        iid: item.iid,
+                        price: item.price,
+                    }
+                }),
                 pictures: pictures,
-                location: location
             })
             if (res.err === 0) {
                 setPublished(true);
@@ -53,8 +51,24 @@ const NewPostPage = () => {
             setIsPublishing(false);
         }
         publish();
-        // navigator('/market');
+        window.history.back();
     }
+
+    const [totalItems, setTotalItems] = useState([]);
+
+    useEffect(() => {
+        const loadData = async () => {
+            const data = await getPost(postId);
+            const data_with_checked = data.items.map((item) => {
+                return {
+                    ...item,
+                    checked: false,
+                }
+            });
+            setTotalItems(data_with_checked);
+        }
+        loadData();
+    }, []);
 
     const handlePictureAdd = (picture) => {
         setPictures([...pictures, { pictureID: pictureIndex, picture: picture }]);
@@ -64,26 +78,6 @@ const NewPostPage = () => {
     const handlePictureRemove = (index) => {
         const newPictures = pictures.filter((picture, i) => picture.pictureID !== index);
         setPictures(newPictures);
-    }
-
-    const handleAddItem = () => {
-        setItems([...items, { editID: itemIndex, name: '', price: '', description: '', category: '' }]);
-        setItemIndex(itemIndex + 1);
-    }
-
-    const handleItemEdit = (index) => (key, value) => {
-        const newItems = items.map((item, i) => {
-            if (item.editID === index) {
-                return { ...item, [key]: value };
-            }
-            return item;
-        })
-        setItems(newItems);
-    };
-
-    const handleItemDelete = (index) => () => {
-        const newItems = items.filter((item, i) => item.editID !== index);
-        setItems(newItems);
     }
 
 
@@ -112,26 +106,9 @@ const NewPostPage = () => {
             }} >
                 <Card style={{ color: 'black', width: '90vw', padding: '10px', marginTop: '10px' }} >
                     <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}  >
-                        <div className='flex justify-end items-center'>{kind === 'buy' ? '我想出' : '我想买'}<Switch checked={kind === 'sell'}
-                            onChange={() => {
-                                if (kind === 'sell') setKind('buy');
-                                else setKind('sell')
-                            }} /> </div>
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} >
                             <div className='flex flex-col items-start' >
-                                <Typography sx={{ fontSize: '18px' }}>
-                                    标题
-                                </Typography>
-                                <CustomTextField sx={{ marginBottom: '10px' }} value={title} onChange={(e) => setTitle(e.target.value)} placeholder='标题' />
-                            </div>
-                            <div className='flex flex-col items-start' >
-                                <Typography sx={{ fontSize: '18px' }}>
-                                    交易地点
-                                </Typography>
-                                <CustomTextField sx={{ marginBottom: '10px' }} value={location} onChange={(e) => setLocation(e.target.value)} placeholder='理想交易地点' />
-                            </div>
-                            <div className='flex flex-col items-start' >
-                                <Typography sx={{ fontSize: '18px' }}>
+                                <Typography sx={{ fontSize: '18px', marginBottom: '10px' }}>
                                     内容
                                 </Typography>
                                 <TextField multiline value={content} onChange={(e) => setContent(e.target.value)} placeholder='内容' minRows={4}
@@ -162,24 +139,45 @@ const NewPostPage = () => {
                 </Card>
 
                 {
-                    items.map((item, index) =>
+                    totalItems.map((item, index) =>
                         <div style={{ width: '90vw', marginTop: '20px' }} >
-                            <ItemCard item={item}
-                                setItemValue={handleItemEdit(item.editID)}
-                                removeSelf={handleItemDelete(item.editID)}
+                            <ItemCard
+                                pid={item.pid}
+                                status={item.status === 1 ? 'valid' : 'invalid'}
+                                name={item.name}
+                                price={item.price}
+                                checked={item.checked}
+                                makeCheck={() => {
+                                    const newItems = totalItems.map((item) => {
+                                        if (item.iid === totalItems[index].iid) {
+                                            return {
+                                                ...item,
+                                                checked: !item.checked,
+                                            }
+                                        }
+                                        return item;
+                                    });
+                                    setTotalItems(newItems);
+                                }}
+                                setPrice={(price) => {
+                                    const newItems = totalItems.map((item) => {
+                                        if (item.iid === totalItems[index].iid) {
+                                            return {
+                                                ...item,
+                                                price: price,
+                                            }
+                                        }
+                                        return item;
+                                    })
+                                    setTotalItems(newItems);
+                                }}
+
                             />
                         </div>)
                 }
             </div>
-            <Button className='focus:outline-none' onClick={handleAddItem}  >
-                <Icons.Add sx={{ transform: 'scale(2,2)', marginTop: '20px' }} />
-            </Button>
-            {/* Loading absolute */}
-            {/* <div style={{ position: 'absolute', top: '50vh', left: '50vw', display: isPublishing ? 'block' : 'none' }} >
-                <Icons.Circle />
-            </div> */}
         </MainFrame>
     )
 };
 
-export default NewPostPage;
+export default NewReplyPage;

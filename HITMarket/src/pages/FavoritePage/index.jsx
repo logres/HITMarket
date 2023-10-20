@@ -6,36 +6,29 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { getPostList } from '@/Utils/api';
+import { getFavoritePostList } from '@/Utils/api';
 
 import { changeTimeShow } from '@/Utils/timeTool'
-// import { FLAG } from '@/Utils/axios_instance';
+import * as Icons from '@mui/icons-material';
+import { Button, Typography } from '@mui/material';
+
 
 const incrementContent = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 
-const MarketPage = ({
-    kind
-}) => {
+const FavoritePage = () => {
 
     const navigator = useNavigate();
 
     const [content, setContent] = useState([]);
 
-    const [keywordsString, setKeywordsString] = useState('');
-
     const [hasMore, setHasMore] = useState(true);
 
     const NUM = 5;
 
-    // const FLAG = sessionStorage.getItem('FLAG');
-
     // debugger;
     const getContent = async () => {
-        const local_content = await getPostList({
+        const local_content = await getFavoritePostList({
             start: content.length,
-            kind: kind,
-            category: 'all',
-            keywords: keywordsString.split(' '),
             num: NUM
         });
         if (local_content.length < NUM) {
@@ -45,11 +38,8 @@ const MarketPage = ({
     }
 
     const init = async () => {
-        const local_content = await getPostList({
-            start: 0,
-            kind: kind,
-            category: 'all',
-            keywords: keywordsString.split(' '),
+        const local_content = await getFavoritePostList({
+            start: content.length,
             num: NUM
         });
         if (local_content.length < NUM) {
@@ -61,24 +51,32 @@ const MarketPage = ({
 
     useEffect(() => {
         init();
-    }, [keywordsString, kind]);
+    }, []);
 
     const fetchMoreData = () => {
         getContent();
     }
 
     return (
-        <MainFrame pageState={kind === 'buy' ? 'market' : 'sell'} >
-            <div className="sticky top-0 w-full flex justify-center items-center z-10 pt-2.5 pb-2.5 bg-white">
+        <MainFrame pageState={'market'} needNavigator={false} >
+            {/* <div className="sticky top-0 w-full flex justify-center items-center z-10 pt-2.5 pb-2.5 bg-white">
                 <SearchBar placeholder={'请按照 “关键词1 关键词2 关键词3” 输入关键词'} value={keywordsString}
                     onChange={(value) => { setKeywordsString(value) }}
                 />
-            </div>
+            </div> */}
             {/* CategoryBar */}
+            <div className="sticky top-0 w-full flex justify-start items-center z-10 pt-2.5 pb-2.5 pl-5 pr-5 bg-white">
+                <Button className="focus:outline-none" onClick={() => {
+                    window.history.back();
+                }}
+                >
+                    <Icons.Close />
+                </Button>
+            </div>
             <div
                 style={{
                     width: '100vw',
-                    height: 'calc(100vh - 103px)',
+                    height: '100vh',
                     overflowY: 'scroll',
                     display: 'flex',
                     flexDirection: 'column',
@@ -101,7 +99,7 @@ const MarketPage = ({
                     >加载中……</p>}
                     scrollableTarget='scroll-container'
                     endMessage={<p>已经划到底啦！</p>}
-                    height='calc(100vh - 103px)'
+                    height='100vh'
 
                     pullDownToRefresh
                     pullDownToRefreshThreshold={300}
@@ -129,11 +127,7 @@ const MarketPage = ({
                                     pictures: item.pics,
                                 }}
                                 key={index} onClick={() => {
-                                    if (kind === 'buy') {
-                                        navigator('/marketDetail/' + item.pid)
-                                    } else {
-                                        navigator('/sellDetail/' + item.pid)
-                                    }
+                                    navigator('/marketDetail/' + item.pid)
                                 }} />)
                         }
                     </ul>
@@ -143,4 +137,4 @@ const MarketPage = ({
     );
 }
 
-export default MarketPage;
+export default FavoritePage;

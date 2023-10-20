@@ -1,7 +1,9 @@
 import MainFrame from '@/components/mainFrame';
 import MessageCard from './messageCard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+
+import { getReplyList } from '@/Utils/api';
 
 const incrementContent = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 const MessagePage = () => {
@@ -15,10 +17,20 @@ const MessagePage = () => {
         }, 500)
     }
 
+    const [replies, setReplies] = useState([])
+
+    useEffect(() => {
+        const init = async () => {
+            const data = await getReplyList();
+            console.log(data);
+            setReplies(data);
+        }
+        init();
+    }, [])
+
+    console.log(replies);
     return (
         <MainFrame pageState={'message'} >
-            {/* <div>MessagePage</div>
-            <MessageCard /> */}
             <div
                 style={{
                     width: '100vw',
@@ -37,11 +49,11 @@ const MessagePage = () => {
                         fetchMoreData
                     }
                     hasMore={content.length < 100}
-                    loader={<p
-                        style={{
-                            color: '#2b2b2b'
-                        }}
-                    >加载中……</p>}
+                    // loader={<p
+                    //     style={{
+                    //         color: '#2b2b2b'
+                    //     }}
+                    // >加载中……</p>}
                     scrollableTarget='scroll-container'
                     endMessage={<p>已经划到底啦！</p>}
                     height='calc(100vh - 50px)'
@@ -49,12 +61,10 @@ const MessagePage = () => {
 
                     <ul>
                         {
-                            content.map((item, index) => <MessageCard key={index} />)
+                            replies?.map((reply, index) => <MessageCard reply={reply} />)
                         }
                     </ul>
                 </InfiniteScroll>
-
-
             </div>
 
         </MainFrame>

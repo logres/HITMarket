@@ -4,12 +4,14 @@ import { Autocomplete, TextField, Button } from '@mui/material';
 const SearchBox = ({
     value = '',
     onChange = (value) => { },
+    placeholder = '请输入关键词',
 }) => {
     return (
         <div className='flex justify-between' style={{ width: '90vw' }} >
-            <Autocomplete
+            {/* <Autocomplete
                 freeSolo
                 options={[]}
+                value={value}
                 onChange={(e, value) => {
                     console.log(value);
                     onChange(value);
@@ -35,14 +37,24 @@ const SearchBox = ({
                         size='small'
                     />
                 )}
-            />
+            /> */}
+            <TextField value={value} onChange={(e) => onChange(e.target.value)} placeholder='请输入关键词' size='small' sx={{
+                width: '80vw',
+                backgroundColor: '#FFFFFF',
+                '& .MuiOutlinedInput-root': {
+                    height: '33px'
+                },
+                '& .MuiAutocomplete-input': {
+                    height: '20px'
+                }
+            }} />
             <Button onClick={() => {
                 onChange('');
             }}
                 // disableRipple
                 className='focus:outline-none'
             >
-                Cancel
+                取消
             </Button>
         </div>
     );

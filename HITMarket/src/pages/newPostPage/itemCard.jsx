@@ -34,20 +34,20 @@ const ItemCard = ({
                         物品名称
                     </Typography>
                     <CustomTextField
-                        value={item.name} onChange={(e) => setItemValue('name', e.target.value)} />
+                        value={item.name} onChange={(e) => setItemValue('name', e.target.value)} placeholder='输入物品名称，如型号等' />
                 </div>
                 <div className='flex flex-col items-start gap-2' >
                     <Typography sx={{ fontSize: '18px' }}>
-                        价格
+                        价格（￥）
                     </Typography>
                     <CustomTextField
-                        value={item.price} onChange={(e) => setItemValue('price', e.target.value)} />
+                        value={item.price} onChange={(e) => setItemValue('price', e.target.value)} placeholder='请输入预期价格，如100或99.9' />
                 </div>
                 <div className='flex flex-col items-start ' >
                     <Typography sx={{ fontSize: '18px' }}>
                         备注
                     </Typography>
-                    <CustomTextField value={item.description} onChange={(e) => setItemValue('text', e.target.value)} />
+                    <CustomTextField value={item.description} onChange={(e) => setItemValue('description', e.target.value)} placeholder='补充信息' />
                 </div>
                 <div className='flex flex-col items-start ' >
                     <Typography sx={{ fontSize: '18px' }}>
