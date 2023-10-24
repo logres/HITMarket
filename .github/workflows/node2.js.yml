@@ -35,6 +35,6 @@ jobs:
       with:
         host: 150.158.52.158 # 替换为你的服务器 IP 地址
         username: ubuntu  # 替换为你的服务器用户名
-        key: ${{ secrets.KEY }}  # 在 GitHub 仓库的 Secrets 中添加 SSH_PRIVATE_KEY，用于连接服务器
+        password: A387752bc!
         script: |
           scp -r dist/ ubuntu@150.158.52.158:/home/ubuntu/HITMarket/dist/
