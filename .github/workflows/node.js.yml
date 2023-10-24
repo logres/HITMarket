@@ -16,6 +16,9 @@ jobs:
       - name: Into Directory
         run: cd HITMarket
 
+      - name: Show File
+        run: ls
+
       - name: Install dependencies
         run: npm install
 
