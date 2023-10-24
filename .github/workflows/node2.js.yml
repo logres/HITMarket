@@ -30,11 +30,16 @@ jobs:
     - run: npm install
     - run: npm run build --if-present
     # - run: npm test
+    # - name: Deploy to server
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: 150.158.52.158 # 替换为你的服务器 IP 地址
+    #     username: ubuntu  # 替换为你的服务器用户名
+    #     password: A387752bc!
+    #     script: |
+    #       scp -r dist/ ubuntu@150.158.52.158:/home/ubuntu/HITMarket/dist/
     - name: Deploy to server
-      uses: appleboy/ssh-action@master
-      with:
-        host: 150.158.52.158 # 替换为你的服务器 IP 地址
-        username: ubuntu  # 替换为你的服务器用户名
-        password: A387752bc!
-        script: |
-          scp -r dist/ ubuntu@150.158.52.158:/home/ubuntu/HITMarket/dist/
+      run: |
+        sudo apt-get update && sudo apt-get install -y sshpass
+        sshpass -p A387752bc! ssh -o StrictHostKeyChecking=no ubuntu@150.158.52.158 "scp -r dist/ ubuntu@150.158.52.158:/home/ubuntu/HITMarket/dist/"
+
