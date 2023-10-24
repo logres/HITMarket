@@ -8,15 +8,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./HITMarket
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         
       - name: Install dependencies
-        run: npm install
+        run: cd HITMARKET && npm install
 
       - name: Build project
         run: npm run build
