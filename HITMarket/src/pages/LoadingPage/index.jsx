@@ -24,7 +24,7 @@ const LoadingPage = () => {
 
     return (
         <div>
-            Loading...
+            Loading...（请使用哈工大APP打开）
         </div>
     )
 }

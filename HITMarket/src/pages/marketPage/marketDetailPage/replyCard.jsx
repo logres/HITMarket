@@ -1,11 +1,12 @@
 
 import { useEffect, useState } from "react";
-import { Chip, Divider, Typography, Card, CardContent, Avatar, CardHeader } from "@mui/material";
+import { Chip, Divider, Typography, Card, CardContent, Avatar, CardHeader, Button } from "@mui/material";
 
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import { changeTimeShow } from '@/Utils/timeTool'
 import styled from '@emotion/styled';
 import { MinioHost as Host } from '@/Utils/axios_instance'
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -41,6 +42,7 @@ const ReplyCard = ({
 
 
     const [images, setImages] = useState([]);
+    const navigator = useNavigate();
 
     useEffect(() => {
         const loadData = async () => {
@@ -58,7 +60,10 @@ const ReplyCard = ({
                 avatar={
                     <div>
                         <Avatar sx={{ bgcolor: 'red' }} aria-label="recipe"
-                            onClick={() => navigator('/personInfo/' + reply.uid)}
+                        onClick={() => {
+                            navigator(`/personInfo/${reply.uid}`);
+                        }
+                        }
                         >
                             {reply.userName}
                         </Avatar></div>

@@ -29,7 +29,6 @@ const MinePage = () => {
                     <CardContent>
                         <div style={{
                             display: 'flex',
-                            flexDirection: 'column',
                             justifyContent: 'flex-start',
                             alignItems: 'center',
                             flexDirection: 'row'

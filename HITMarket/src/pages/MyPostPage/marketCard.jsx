@@ -46,7 +46,7 @@ const PostCard = (
 
     return (
         <Card className="w-[90vw]" sx={{
-            margin: '5px', backgroundColor: '#FFFFFF', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.2)', border: '2px solid #FFF', borderRadius: '10px', boxShadow: 'none', padding: '16px',
+            margin: '5px', backgroundColor: '#FFFFFF', border: '2px solid #FFF', borderRadius: '10px', boxShadow: 'none', padding: '16px',
         }} onClick={onClick}>
             <CardHeader
                 avatar={

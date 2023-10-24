@@ -12,6 +12,8 @@ const PersonInfoPage = ({
 
     const { userId } = useParams();
 
+    console.log(userId);
+
     const readOnly = userId == '-1' ? false : true;
 
     const [mode, setMode] = useState('view');
