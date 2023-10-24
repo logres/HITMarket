@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [18.18]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -35,6 +35,6 @@ jobs:
       with:
         host: 150.158.52.158 # 替换为你的服务器 IP 地址
         username: ubuntu  # 替换为你的服务器用户名
-        key: ${{ secrets.SSH_PRIVATE_KEY }}  # 在 GitHub 仓库的 Secrets 中添加 SSH_PRIVATE_KEY，用于连接服务器
+        key: ${{ secrets.KEY }}  # 在 GitHub 仓库的 Secrets 中添加 SSH_PRIVATE_KEY，用于连接服务器
         script: |
-          scp -r dist/ ubuntu@150.158.52.158:/home/ubuntu/HITMarket/dist/  # 替换为你的远程路径
+          scp -r dist/ ubuntu@150.158.52.158:/home/ubuntu/HITMarket/dist/
