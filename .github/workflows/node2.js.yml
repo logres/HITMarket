@@ -1,0 +1,40 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    # - run: npm ci
+    - run: npm install
+    - run: npm run build --if-present
+    # - run: npm test
+    - name: Deploy to server
+      uses: appleboy/ssh-action@master
+      with:
+        host: 150.158.52.158 # 替换为你的服务器 IP 地址
+        username: ubuntu  # 替换为你的服务器用户名
+        key: ${{ secrets.SSH_PRIVATE_KEY }}  # 在 GitHub 仓库的 Secrets 中添加 SSH_PRIVATE_KEY，用于连接服务器
+        script: |
+          scp -r dist/ ubuntu@150.158.52.158:/home/ubuntu/HITMarket/dist/  # 替换为你的远程路径
