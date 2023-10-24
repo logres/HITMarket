@@ -12,18 +12,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Show File
-        run: ls
-
-      - name: Into Directory
-        run: cd HITMarket/HITMarket
-
-      - name: Show File
-        run: ls
-
+        
       - name: Install dependencies
-        run: npm install
+        run: cd HITMARKET && npm install
 
       - name: Build project
         run: npm run build
