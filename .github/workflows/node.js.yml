@@ -1,0 +1,31 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main  # 替换为你的主分支名称
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: 150.158.52.158 # 替换为你的服务器 IP 地址
+          username: ubuntu  # 替换为你的服务器用户名
+          key: ${{ secrets.SSH_PRIVATE_KEY }}  # 在 GitHub 仓库的 Secrets 中添加 SSH_PRIVATE_KEY，用于连接服务器
+          script: |
+            scp -r dist/ ubuntu@150.158.52.158:/home/ubuntu/HITMarket/dist/  # 替换为你的远程路径
+
+
