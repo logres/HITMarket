@@ -12,24 +12,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Show File
-        run: ls
-
-      - name: Into Directory
-        run: cd ./HITMarket
-
-      - name: Show File
-        run: ls
-
+        
       - name: Install dependencies
+        working-directory: ./HITMarket
         run: npm install
 
       - name: Build project
+        working-directory: ./HITMarket
         run: npm run build
 
       - name: Deploy to server
         uses: appleboy/ssh-action@master
+        working-directory: ./HITMarket
         with:
           host: 150.158.52.158 # 替换为你的服务器 IP 地址
           username: ubuntu  # 替换为你的服务器用户名
