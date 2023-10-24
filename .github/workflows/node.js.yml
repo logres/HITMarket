@@ -13,8 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Show File
+        run: ls
+
       - name: Into Directory
-        run: cd HITMarket
+        run: cd HITMarket/HITMarket
 
       - name: Show File
         run: ls
